@@ -12,7 +12,7 @@ $THEMES = [
        ================================================================ */
     'music' => [
         'name'        => 'TicketDisaster',
-        'tagline'     => 'Vulnerable Concert<br>Ticket Shop',
+        'tagline'     => 'Vulnerable Concert Ticket Shop',
         'motto'       => '"We handle your passwords like we handle mosh pits &mdash; no protection."',
         'login_quip'  => '"Your data is our encore."',
         'icon'        => 'fas fa-ticket-alt',
@@ -100,7 +100,7 @@ $THEMES = [
        ================================================================ */
     'sports' => [
         'name'        => 'Stadia',
-        'tagline'     => 'Vulnerable Sports<br>Ticket Shop',
+        'tagline'     => 'Vulnerable Sports Ticket Shop',
         'motto'       => '"Championship Rings. Plaintext Strings."',
         'login_quip'  => '"Mile High pride, mile-low security."',
         'icon'        => 'fas fa-football-ball',
@@ -183,7 +183,7 @@ $THEMES = [
        ================================================================ */
     'games' => [
         'name'        => 'Flux',
-        'tagline'     => 'Vulnerable<br>Game Store',
+        'tagline'     => 'Vulnerable Game Store',
         'motto'       => '"We ship bugs faster than any AAA studio."',
         'login_quip'  => '"Your account security? We left it in Early Access."',
         'icon'        => 'fas fa-gamepad',
@@ -266,7 +266,7 @@ $THEMES = [
        ================================================================ */
     'cars' => [
         'name'        => 'Rusty Bucket',
-        'tagline'     => 'Vulnerable Used Car<br>Lot',
+        'tagline'     => 'Vulnerable Used Car Lot',
         'motto'       => '"Held by hope."',
         'login_quip'  => '"Our security is as reliable as our transmissions."',
         'icon'        => 'fas fa-car-crash',
