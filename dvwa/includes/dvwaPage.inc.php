@@ -188,15 +188,9 @@ function dvwaSeedConcerts($conn) {
  * Re-seed ONLY the concerts table for a theme switch (preserves users + guestbook).
  */
 function dvwaReseedForTheme($themeKey) {
-    global $_DVWA;
-    $conn = new mysqli(
-        $_DVWA['db_server'],
-        $_DVWA['db_user'],
-        $_DVWA['db_password'],
-        $_DVWA['db_database'],
-        $_DVWA['db_port']
-    );
-    if ($conn->connect_error) return false;
+    // Use dvwaDbConnect which auto-creates DB and tables if needed
+    $conn = dvwaDbConnect();
+    if (!$conn) return false;
 
     $conn->query("DELETE FROM concerts");
 
