@@ -414,18 +414,44 @@ class ConcertScraper {
     }
 
     /* ------------------------------------------------------------------ */
-    /*  ARTIST IMAGE (Wikipedia + DuckDuckGo)                              */
+    /*  IMAGE FETCHING (Wikipedia + DuckDuckGo)                            */
     /* ------------------------------------------------------------------ */
-    public function fetchArtistImage($bandName) {
-        $safe = preg_replace('/[^a-zA-Z0-9_-]/', '_', $bandName);
+
+    /**
+     * Fetch an image for a given name, with theme-aware Wikipedia slug variants.
+     * $context: 'music' (default), 'sports', 'games', 'cars'
+     */
+    public function fetchArtistImage($name, $context = 'music') {
+        $safe = preg_replace('/[^a-zA-Z0-9_-]/', '_', $name);
         $local = $this->imageDir . $safe . '.jpg';
         $web   = 'assets/images/bands/' . $safe . '.jpg';
 
         if (file_exists($local) && filesize($local) > 500) return $web;
 
-        // Wikipedia REST API (free, no key)
-        $slug = str_replace(' ', '_', $bandName);
-        $variants = [$slug, "{$slug}_(band)", "{$slug}_(musician)", "{$slug}_(singer)", "{$slug}_(rapper)"];
+        // Build Wikipedia slug variants based on theme context
+        $slug = str_replace(' ', '_', $name);
+        switch ($context) {
+            case 'sports':
+                // For sports: try the team name directly (extracted by caller),
+                // plus common Wikipedia disambiguation suffixes
+                $variants = [$slug, "{$slug}_(sports_team)", "{$slug}_(NBA)", "{$slug}_(NFL)", "{$slug}_(NHL)", "{$slug}_(MLB)"];
+                $ddgSuffix = 'sports team logo';
+                break;
+            case 'games':
+                // For games: try the game title directly, plus video game suffix
+                $variants = [$slug, "{$slug}_(video_game)"];
+                $ddgSuffix = 'video game';
+                break;
+            case 'cars':
+                // For cars: try the make/model
+                $variants = [$slug];
+                $ddgSuffix = 'car';
+                break;
+            default: // music
+                $variants = [$slug, "{$slug}_(band)", "{$slug}_(musician)", "{$slug}_(singer)", "{$slug}_(rapper)"];
+                $ddgSuffix = 'band';
+                break;
+        }
 
         foreach ($variants as $v) {
             $json = $this->fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" . rawurlencode($v), ['Accept: application/json'], 10);
@@ -434,18 +460,17 @@ class ConcertScraper {
             $imgUrl = $d['thumbnail']['source'] ?? $d['originalimage']['source'] ?? null;
             if (!$imgUrl) continue;
 
-            // Request a 400px wide thumbnail
             $imgUrl = preg_replace('/\/\d+px-/', '/400px-', $imgUrl);
             $data = $this->fetch($imgUrl, [], 10);
             if ($data && strlen($data) > 500) {
                 file_put_contents($local, $data);
-                $this->log("Image OK: $bandName (Wikipedia)");
+                $this->log("Image OK: $name (Wikipedia)");
                 return $web;
             }
         }
 
         // DuckDuckGo Instant Answer fallback
-        $json = $this->fetch("https://api.duckduckgo.com/?q=" . urlencode($bandName . " band") . "&format=json&no_html=1", [], 10);
+        $json = $this->fetch("https://api.duckduckgo.com/?q=" . urlencode($name . " " . $ddgSuffix) . "&format=json&no_html=1", [], 10);
         if ($json) {
             $d = json_decode($json, true);
             $imgUrl = $d['Image'] ?? '';
@@ -454,13 +479,13 @@ class ConcertScraper {
                 $data = $this->fetch($imgUrl, [], 10);
                 if ($data && strlen($data) > 500) {
                     file_put_contents($local, $data);
-                    $this->log("Image OK: $bandName (DDG)");
+                    $this->log("Image OK: $name (DDG)");
                     return $web;
                 }
             }
         }
 
-        $this->log("No image: $bandName");
+        $this->log("No image: $name");
         return '';
     }
 
@@ -649,11 +674,12 @@ class ConcertScraper {
             usleep(300000);
         }
 
-        // Fetch images
+        // Fetch images — extract the home team name for Wikipedia lookup
         foreach ($events as &$e) {
             if (empty($e['poster_url'])) {
+                // "Nuggets vs Lakers" → "Denver Nuggets"; use the full team name from the teams array
                 $teamName = preg_replace('/ (vs?\.?|at|@) .*/i', '', $e['band_name']);
-                $e['poster_url'] = $this->fetchArtistImage(trim($teamName));
+                $e['poster_url'] = $this->fetchArtistImage(trim($teamName), 'sports');
                 usleep(200000);
             }
         }
@@ -752,7 +778,7 @@ class ConcertScraper {
         return [];
     }
 
-    public function updateExistingImages() {
+    public function updateExistingImages($themeKey = 'music') {
         global $_DVWA;
         require_once dirname(__FILE__) . '/../../config/config.inc.php';
         $conn = new mysqli($_DVWA['db_server'], $_DVWA['db_user'], $_DVWA['db_password'], $_DVWA['db_database'], $_DVWA['db_port']);
@@ -768,9 +794,14 @@ class ConcertScraper {
             $poster = $row['poster_url'];
             $spotify = $row['spotify_url'];
 
-            // Update image if missing
+            // Update image if missing — use theme-appropriate Wikipedia lookups
             if (empty($poster) || !file_exists(dirname(__FILE__) . '/../../' . $poster)) {
-                $poster = $this->fetchArtistImage($row['band_name']);
+                $searchName = $row['band_name'];
+                // For sports, extract the home team from "Team vs Opponent"
+                if ($themeKey === 'sports') {
+                    $searchName = preg_replace('/ (vs?\.?|at|@) .*/i', '', $searchName);
+                }
+                $poster = $this->fetchArtistImage(trim($searchName), $themeKey);
                 if ($poster) $changed = true;
                 usleep(300000);
             }

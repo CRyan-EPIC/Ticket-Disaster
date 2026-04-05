@@ -5,10 +5,9 @@ if (!dvwaIsLoggedIn()) {
     dvwaRedirect('login.php');
 }
 
-// Redirect to theme chooser if no theme selected
+// If no theme is set, default to music (theme can be changed on login or topbar)
 if (getCurrentTheme() === null) {
-    $bp = $base_path ?? '';
-    dvwaRedirect($bp . 'theme_chooser.php');
+    setTheme('music');
 }
 
 // Send headers before ANY output

@@ -23,7 +23,7 @@ if (isset($_POST['scrape_all'])) {
 // Handle image update
 if (isset($_POST['update_images'])) {
     set_time_limit(300);
-    $updated = $scraper->updateExistingImages();
+    $updated = $scraper->updateExistingImages($themeKey);
     $log = $scraper->getLog();
     $message = "<div class='alert alert-success'><i class='fas fa-check-circle'></i> Updated {$updated} images.</div>";
 }

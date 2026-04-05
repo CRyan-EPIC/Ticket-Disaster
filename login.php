@@ -3,6 +3,17 @@ require_once 'dvwa/includes/dvwaPage.inc.php';
 
 $error = '';
 
+// Handle theme switch from login page
+if (isset($_POST['theme']) && isset($GLOBALS['THEMES'][$_POST['theme']])) {
+    $newTheme = $_POST['theme'];
+    $oldTheme = getCurrentTheme();
+    setTheme($newTheme);
+    if ($newTheme !== $oldTheme) {
+        dvwaReseedForTheme($newTheme);
+    }
+    dvwaRedirect('login.php');
+}
+
 if (isset($_POST['Login'])) {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -40,6 +51,8 @@ if (isset($_GET['logout'])) {
 }
 
 $theme = getThemeConfig();
+$currentThemeKey = getCurrentTheme();
+global $THEMES;
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -58,6 +71,22 @@ $theme = getThemeConfig();
             --purple-glow: <?php echo $theme['accent_glow']; ?>;
             --neon-pink: <?php echo $theme['secondary']; ?>;
         }
+        .theme-pills { display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; margin-top: 0.75rem; }
+        .theme-pill {
+            border: none; background: #1a1a2e; color: #8892a4; padding: 0.3rem 0.75rem;
+            font-size: 0.72rem; font-weight: 600; cursor: pointer;
+            border-radius: 2px; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.35rem;
+        }
+        .theme-pill:hover { color: #e2e8f0; background: #252538; }
+        .theme-pill.active { color: #fff; border-bottom: 2px solid var(--purple); }
+        .theme-pill-music { --pill-color: #8b5cf6; }
+        .theme-pill-sports { --pill-color: #f97316; }
+        .theme-pill-games { --pill-color: #22c55e; }
+        .theme-pill-cars { --pill-color: #ef4444; }
+        .theme-pill.active.theme-pill-music { background: rgba(139,92,246,0.15); color: #a78bfa; border-color: #8b5cf6; }
+        .theme-pill.active.theme-pill-sports { background: rgba(249,115,22,0.15); color: #fb923c; border-color: #f97316; }
+        .theme-pill.active.theme-pill-games { background: rgba(34,197,94,0.15); color: #4ade80; border-color: #22c55e; }
+        .theme-pill.active.theme-pill-cars { background: rgba(239,68,68,0.15); color: #f87171; border-color: #ef4444; }
     </style>
 </head>
 <body>
@@ -68,6 +97,20 @@ $theme = getThemeConfig();
                 <p><?php echo htmlspecialchars($theme['tagline']); ?></p>
                 <p style="font-size:0.75rem;color:<?php echo $theme['secondary']; ?>;font-style:italic;opacity:0.7;margin-top:0.3rem;"><?php echo $theme['login_quip']; ?></p>
             </div>
+
+            <!-- Theme selector pills -->
+            <div class="theme-pills">
+                <?php foreach ($THEMES as $tKey => $tCfg): ?>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="theme" value="<?php echo $tKey; ?>">
+                    <button type="submit" class="theme-pill theme-pill-<?php echo $tKey; ?> <?php echo $tKey === $currentThemeKey ? 'active' : ''; ?>">
+                        <i class="<?php echo $tCfg['icon']; ?>"></i> <?php echo htmlspecialchars($tCfg['name']); ?>
+                    </button>
+                </form>
+                <?php endforeach; ?>
+            </div>
+
+            <hr style="border-color:#252538; margin: 1rem 0;">
 
             <?php if ($error): ?>
                 <div class="alert alert-danger mb-3">
@@ -101,9 +144,7 @@ $theme = getThemeConfig();
 
             <div class="text-center mt-4">
                 <small class="text-muted">
-                    Default: <code>admin / password</code><br>
-                    <a href="setup.php" class="text-purple">Setup Database</a> |
-                    <a href="theme_chooser.php?switch=1" class="text-purple">Switch Theme</a>
+                    Default: <code>admin / password</code>
                 </small>
             </div>
         </div>

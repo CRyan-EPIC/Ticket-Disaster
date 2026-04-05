@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once __DIR__ . '/config/config.inc.php';
-require_once __DIR__ . '/config/themes.php';
+// dvwaPage.inc.php already calls session_start()
 require_once __DIR__ . '/dvwa/includes/dvwaPage.inc.php';
 
 // Handle theme selection
@@ -9,7 +7,7 @@ if (isset($_POST['theme']) && isset($THEMES[$_POST['theme']])) {
     setTheme($_POST['theme']);
     // Re-seed concerts table for the new theme (preserves users + guestbook)
     dvwaReseedForTheme($_POST['theme']);
-    header('Location: index.php');
+    header('Location: login.php');
     exit;
 }
 
