@@ -432,14 +432,29 @@ class ConcertScraper {
         $slug = str_replace(' ', '_', $name);
         switch ($context) {
             case 'sports':
-                // For sports: try the team name directly (extracted by caller),
-                // plus common Wikipedia disambiguation suffixes
-                $variants = [$slug, "{$slug}_(sports_team)", "{$slug}_(NBA)", "{$slug}_(NFL)", "{$slug}_(NHL)", "{$slug}_(MLB)"];
-                $ddgSuffix = 'sports team logo';
+                // Map short team names to full Wikipedia article names
+                $teamMap = [
+                    'Nuggets' => 'Denver_Nuggets', 'Avalanche' => 'Colorado_Avalanche',
+                    'Broncos' => 'Denver_Broncos', 'Rockies' => 'Colorado_Rockies',
+                    'Rapids' => 'Colorado_Rapids', 'CU Buffs' => 'Colorado_Buffaloes',
+                    'CSU Rams' => 'Colorado_State_Rams', 'Air Force' => 'Air_Force_Falcons',
+                    'DU Pioneers' => 'Denver_Pioneers', 'Mammoth' => 'Colorado_Mammoth',
+                ];
+                $mapped = $slug;
+                foreach ($teamMap as $short => $full) {
+                    if (stripos($name, $short) !== false) { $mapped = $full; break; }
+                }
+                $variants = [$mapped, $slug];
+                $ddgSuffix = 'sports team';
                 break;
             case 'games':
-                // For games: try the game title directly, plus video game suffix
-                $variants = [$slug, "{$slug}_(video_game)"];
+                // For games: try exact title, then without subtitle (after colon),
+                // then with _(video_game) suffix
+                $cleanSlug = preg_replace('/[:_]-.*$/', '', $slug); // strip subtitle
+                $variants = [$slug];
+                if ($cleanSlug !== $slug) $variants[] = $cleanSlug;
+                $variants[] = "{$slug}_(video_game)";
+                if ($cleanSlug !== $slug) $variants[] = "{$cleanSlug}_(video_game)";
                 $ddgSuffix = 'video game';
                 break;
             case 'cars':
@@ -454,6 +469,7 @@ class ConcertScraper {
         }
 
         foreach ($variants as $v) {
+            usleep(350000); // rate-limit: ~3 req/sec to avoid Wikipedia 429s
             $json = $this->fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" . rawurlencode($v), ['Accept: application/json'], 10);
             if (!$json) continue;
             $d = json_decode($json, true);
@@ -462,6 +478,11 @@ class ConcertScraper {
 
             $imgUrl = preg_replace('/\/\d+px-/', '/400px-', $imgUrl);
             $data = $this->fetch($imgUrl, [], 10);
+            // Retry once on 429 (rate limit) after a pause
+            if (!$data || strlen($data) <= 500) {
+                usleep(2000000); // 2 second backoff
+                $data = $this->fetch($imgUrl, [], 10);
+            }
             if ($data && strlen($data) > 500) {
                 file_put_contents($local, $data);
                 $this->log("Image OK: $name (Wikipedia)");

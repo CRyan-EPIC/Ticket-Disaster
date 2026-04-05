@@ -173,7 +173,7 @@ if (getCurrentTheme() !== null && !isset($_GET['switch'])) {
             <form method="POST" class="theme-card card-sports">
                 <input type="hidden" name="theme" value="sports">
                 <span class="theme-icon"><i class="fas fa-football-ball"></i></span>
-                <h3>FanCrash</h3>
+                <h3>Stadia</h3>
                 <div class="theme-tagline">Sports Ticket Shop</div>
                 <div class="theme-desc">
                     Grab tickets to Denver Nuggets, Avalanche, Rockies, Broncos, CU Buffs, and more. Real teams, real schedules, real prices.

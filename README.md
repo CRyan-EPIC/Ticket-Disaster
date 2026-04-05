@@ -1,4 +1,4 @@
-# TicketDisaster / FanCrash / Flux / Rust Bucket Motors
+# TicketDisaster / Stadia / Flux / Rust Bucket Motors
 
 **Vulnerable Web Application** — a modern, multi-themed reimagining of [DVWA](https://github.com/digininja/DVWA) for security training.
 
@@ -17,7 +17,7 @@ A deliberately vulnerable web application designed for security professionals, s
 | Theme | Name | Accent | Description |
 |-------|------|--------|-------------|
 | **Music** | TicketDisaster | Purple | Concert ticket shop — Red Rocks, Mission Ballroom, and Colorado venues. Scraped from real venue listings. |
-| **Sports** | FanCrash | Orange | Denver-area sports tickets — Nuggets, Avalanche, Rockies, Broncos, CU Buffs, and more. |
+| **Sports** | Stadia | Orange | Denver-area sports tickets — Nuggets, Avalanche, Rockies, Broncos, CU Buffs, and more. |
 | **Games** | Flux | Green | Steam-like video game store — real titles, real prices, scraped from gaming sources. |
 | **Cars** | Rust Bucket Motors | Red | Hilariously sketchy used car lot selling $1,000-or-less "death traps" to high school students. School appropriate. |
 

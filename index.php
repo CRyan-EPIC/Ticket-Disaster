@@ -189,8 +189,95 @@ $remaining = array_slice($concerts, 5);
             <?php endforeach; ?>
         </div>
 
+<?php elseif ($currentThemeKey === 'cars'): ?>
+<!-- ======== CRAIGSLIST-STYLE LAYOUT FOR CARS THEME ======== -->
+<style>
+.cl-list { display: flex; flex-direction: column; gap: 0; }
+.cl-row {
+    display: grid; grid-template-columns: 180px 1fr auto; gap: 0;
+    border-bottom: 1px solid #1e1e30; padding: 0; transition: background 0.1s;
+    cursor: pointer; background: #0c0c14;
+}
+.cl-row:hover { background: #151525; }
+.cl-row:first-child { border-top: 1px solid #1e1e30; }
+.cl-thumb {
+    width: 180px; height: 120px; object-fit: cover; display: block;
+    border-right: 1px solid #1e1e30;
+}
+.cl-thumb-ph {
+    width: 180px; height: 120px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; color: rgba(255,255,255,0.08);
+    border-right: 1px solid #1e1e30;
+}
+.cl-details { padding: 0.6rem 1rem; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.cl-title {
+    font-size: 0.92rem; font-weight: 700; color: #60a5fa;
+    margin-bottom: 0.25rem; text-decoration: none;
+}
+.cl-title:hover { text-decoration: underline; }
+.cl-desc {
+    font-size: 0.78rem; color: #8892a4; line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    margin-bottom: 0.3rem;
+}
+.cl-meta { font-size: 0.72rem; color: #555; display: flex; gap: 1rem; align-items: center; }
+.cl-meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+.cl-price-col {
+    padding: 0.6rem 1rem; display: flex; flex-direction: column; align-items: flex-end;
+    justify-content: center; min-width: 90px; border-left: 1px solid #1e1e30;
+}
+.cl-price { font-size: 1.1rem; font-weight: 800; color: #22c55e; }
+.cl-type { font-size: 0.68rem; color: #555; margin-top: 0.2rem; }
+.cl-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.5rem 0; margin-bottom: 0.5rem; border-bottom: 2px solid #ef4444;
+}
+.cl-header-title { font-size: 0.82rem; font-weight: 700; color: #f87171; text-transform: uppercase; letter-spacing: 1px; }
+.cl-header-count { font-size: 0.75rem; color: #555; }
+@media (max-width: 640px) {
+    .cl-row { grid-template-columns: 100px 1fr; }
+    .cl-thumb, .cl-thumb-ph { width: 100px; height: 80px; }
+    .cl-price-col { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; border-left: none; border-top: 1px solid #1e1e30; }
+}
+</style>
+
+<div class="cl-header">
+    <div class="cl-header-title"><i class="fas fa-car"></i> Vehicles for Sale by Owner</div>
+    <div class="cl-header-count"><?php echo count($concerts); ?> postings</div>
+</div>
+
+<div class="cl-list">
+    <?php foreach ($concerts as $i => $c):
+        $poster = $c['poster_url'] ?? '';
+        $hasImage = !empty($poster) && strpos($poster, 'data:') !== 0 && (file_exists($poster) || substr($poster, 0, 4) === 'http');
+    ?>
+    <div class="cl-row">
+        <?php if ($hasImage): ?>
+            <img class="cl-thumb" src="<?php echo htmlspecialchars($poster); ?>" alt="" loading="lazy">
+        <?php else: ?>
+            <div class="cl-thumb-ph" style="background:<?php echo $gradients[$i % count($gradients)]; ?>">
+                <i class="fas fa-car"></i>
+            </div>
+        <?php endif; ?>
+        <div class="cl-details">
+            <div class="cl-title"><?php echo htmlspecialchars($c['band_name']); ?></div>
+            <div class="cl-desc"><?php echo htmlspecialchars($c['description'] ?? ''); ?></div>
+            <div class="cl-meta">
+                <span><i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($c['venue']); ?>, <?php echo htmlspecialchars($c['city']); ?></span>
+                <span><i class="fas fa-calendar"></i> <?php echo date('M j', strtotime($c['concert_date'])); ?></span>
+                <span><i class="fas fa-tag"></i> <?php echo htmlspecialchars($c['genre']); ?></span>
+            </div>
+        </div>
+        <div class="cl-price-col">
+            <div class="cl-price">$<?php echo number_format($c['price'], 0); ?></div>
+            <div class="cl-type"><?php echo htmlspecialchars($c['genre']); ?></div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+</div>
+
 <?php else: ?>
-<!-- ======== DEFAULT CARD GRID LAYOUT (non-games themes) ======== -->
+<!-- ======== DEFAULT CARD GRID LAYOUT (music/sports themes) ======== -->
 <div class="concert-grid">
     <?php foreach ($concerts as $i => $c):
         $poster = $c['poster_url'] ?? '';

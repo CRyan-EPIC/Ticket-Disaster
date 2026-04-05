@@ -99,7 +99,7 @@ $THEMES = [
        SPORTS — Denver area sports tickets
        ================================================================ */
     'sports' => [
-        'name'        => 'FanCrash',
+        'name'        => 'Stadia',
         'tagline'     => 'Vulnerable Sports Ticket Shop',
         'motto'       => '"Go Denver! Our teams are unstoppable &mdash; our security, not so much."',
         'login_quip'  => '"Mile High pride, mile-low security."',
@@ -155,7 +155,7 @@ $THEMES = [
         'vuln_upload_desc'  => 'Upload your fan photo or team avatar',
 
         'vuln_csrf_title'   => 'Account Security',
-        'vuln_csrf_desc'    => 'Change your FanCrash account password',
+        'vuln_csrf_desc'    => 'Change your Stadia account password',
 
         'vuln_fi_title'     => 'Policies & Help',
         'vuln_fi_desc'      => 'Read our terms, refund policies, and FAQs before purchasing',
@@ -165,7 +165,7 @@ $THEMES = [
         'vuln_brute_success'=> 'Welcome to the Press Box',
         'vuln_brute_flavor' => 'You now have courtside access to all games.',
 
-        'about_what'        => 'FanCrash is a deliberately vulnerable web application themed as a Denver-area sports ticket shop.',
+        'about_what'        => 'Stadia is a deliberately vulnerable web application themed as a Denver-area sports ticket shop.',
         'about_modules'     => [
             ['Game Search',      'Search games by team',        'SQL Injection'],
             ['Game Finder',      'Search for games',            'XSS (Reflected)'],
