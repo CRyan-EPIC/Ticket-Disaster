@@ -1,5 +1,6 @@
 <?php
 require_once 'dvwa/includes/dvwaPage.inc.php';
+require_once __DIR__ . '/setup_seeds.php';
 
 $message = '';
 $theme = getThemeConfig();
@@ -114,8 +115,6 @@ if (isset($_POST['reset_db'])) {
     include __FILE__;
     exit;
 }
-
-require_once __DIR__ . '/setup_seeds.php';
 
 ?>
 <!DOCTYPE html>

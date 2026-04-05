@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# TicketDisaster / FanCrash / BuggedOut Games / Rust Bucket Motors
+# TicketDisaster / FanCrash / Flux / Rust Bucket Motors
 # Auto-deploy script for Fedora 42+ and Ubuntu 24.04+
 #
 # Installs Apache, PHP, MariaDB, configures everything, seeds the database.

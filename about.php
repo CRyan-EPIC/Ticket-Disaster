@@ -15,7 +15,7 @@ $theme = getThemeConfig();
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="text-purple mb-3">What is <?php echo htmlspecialchars($theme['name']); ?>?</h4>
-                <p><?php echo htmlspecialchars($theme['about_what']); ?> It is a reimagining of the classic <a href="https://github.com/digininja/DVWA" target="_blank" class="text-purple">Damn Vulnerable Web Application (DVWA)</a> by Robin Wood, with a contemporary design and a fun theme.</p>
+                <p><?php echo htmlspecialchars($theme['about_what']); ?> It is a reimagining of the classic <a href="https://github.com/digininja/DVWA" target="_blank" class="text-purple">Vulnerable Web Application (DVWA)</a> by Robin Wood, with a contemporary design and a fun theme.</p>
 
                 <p>Its purpose is to provide a legal, safe environment for security professionals, students, and developers to practice common web vulnerabilities and learn about secure coding practices.</p>
 

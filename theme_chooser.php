@@ -187,10 +187,10 @@ if (getCurrentTheme() !== null && !isset($_GET['switch'])) {
             <form method="POST" class="theme-card card-games">
                 <input type="hidden" name="theme" value="games">
                 <span class="theme-icon"><i class="fas fa-gamepad"></i></span>
-                <h3>BuggedOut Games</h3>
+                <h3>Flux</h3>
                 <div class="theme-tagline">Video Game Store</div>
                 <div class="theme-desc">
-                    Browse and buy popular and upcoming video games. Real titles, real prices, scraped from gaming sources. Think Steam, but worse.
+                    Browse and buy popular and upcoming video games. Real titles, real prices, scraped from gaming sources. Think Steam, but less secure.
                 </div>
                 <button type="submit" class="btn-choose"><i class="fas fa-play"></i> Press Start</button>
             </form>

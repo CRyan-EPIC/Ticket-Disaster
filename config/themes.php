@@ -12,7 +12,7 @@ $THEMES = [
        ================================================================ */
     'music' => [
         'name'        => 'TicketDisaster',
-        'tagline'     => 'Damn Vulnerable Concert Ticket Shop',
+        'tagline'     => 'Vulnerable Concert Ticket Shop',
         'motto'       => '"We handle your passwords like we handle mosh pits &mdash; no protection."',
         'login_quip'  => '"Your data is our encore."',
         'icon'        => 'fas fa-ticket-alt',
@@ -100,7 +100,7 @@ $THEMES = [
        ================================================================ */
     'sports' => [
         'name'        => 'FanCrash',
-        'tagline'     => 'Damn Vulnerable Sports Ticket Shop',
+        'tagline'     => 'Vulnerable Sports Ticket Shop',
         'motto'       => '"Go Denver! Our teams are unstoppable &mdash; our security, not so much."',
         'login_quip'  => '"Mile High pride, mile-low security."',
         'icon'        => 'fas fa-football-ball',
@@ -182,8 +182,8 @@ $THEMES = [
        GAMES — Steam-like video game store
        ================================================================ */
     'games' => [
-        'name'        => 'BuggedOut Games',
-        'tagline'     => 'Damn Vulnerable Game Store',
+        'name'        => 'Flux',
+        'tagline'     => 'Vulnerable Game Store',
         'motto'       => '"We ship bugs faster than any AAA studio."',
         'login_quip'  => '"Your account security? We left it in Early Access."',
         'icon'        => 'fas fa-gamepad',
@@ -238,7 +238,7 @@ $THEMES = [
         'vuln_upload_desc'  => 'Upload your gaming avatar or profile picture',
 
         'vuln_csrf_title'   => 'Account Security',
-        'vuln_csrf_desc'    => 'Change your BuggedOut account password',
+        'vuln_csrf_desc'    => 'Change your Flux account password',
 
         'vuln_fi_title'     => 'Store Policies',
         'vuln_fi_desc'      => 'Read our refund policy, EULA, and FAQs',
@@ -248,7 +248,7 @@ $THEMES = [
         'vuln_brute_success'=> 'Welcome to Developer Mode',
         'vuln_brute_flavor' => 'You now have access to dev builds and cheat codes.',
 
-        'about_what'        => 'BuggedOut Games is a deliberately vulnerable web application themed as a video game storefront (think Steam, but way less secure).',
+        'about_what'        => 'Flux is a deliberately vulnerable web application themed as a video game storefront (think Steam, but less secure).',
         'about_modules'     => [
             ['Game Lookup',      'Search games by title',       'SQL Injection'],
             ['Store Search',     'Search the catalog',          'XSS (Reflected)'],
@@ -266,7 +266,7 @@ $THEMES = [
        ================================================================ */
     'cars' => [
         'name'        => 'Rust Bucket Motors',
-        'tagline'     => 'Damn Vulnerable Used Car Lot',
+        'tagline'     => 'Vulnerable Used Car Lot',
         'motto'       => '"If the check engine light ISN\'T on, something is wrong."',
         'login_quip'  => '"Our security is as reliable as our transmissions."',
         'icon'        => 'fas fa-car-crash',

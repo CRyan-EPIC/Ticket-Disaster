@@ -53,41 +53,12 @@ $gradients = [
 <?php
 $currentThemeKey = getCurrentTheme() ?? 'music';
 
-// Group items by genre for Steam-like category sidebar
-$genres = [];
-foreach ($concerts as $c) {
-    $g = $c['genre'] ?? 'Other';
-    if (!isset($genres[$g])) $genres[$g] = 0;
-    $genres[$g]++;
-}
-arsort($genres);
-
 if ($currentThemeKey === 'games'):
 // ======== STEAM-LIKE LAYOUT FOR GAMES THEME ========
 $featured = array_slice($concerts, 0, 5);
 $remaining = array_slice($concerts, 5);
 ?>
 <style>
-.steam-layout { display: flex; gap: 1rem; }
-.steam-sidebar {
-    width: 200px; min-width: 200px; flex-shrink: 0;
-    background: #0e0e1a; border-radius: 4px; padding: 0; overflow: hidden;
-    border: 1px solid #1e1e30; align-self: flex-start; position: sticky; top: 1rem;
-}
-.steam-sidebar-title {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: #4ade80; padding: 0.75rem 1rem 0.5rem;
-    border-bottom: 1px solid #1e1e30;
-}
-.steam-cat-link {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0.45rem 1rem; font-size: 0.78rem; color: #a3b1c6;
-    text-decoration: none; transition: all 0.15s; cursor: pointer;
-    border-bottom: 1px solid rgba(30,30,48,0.5);
-}
-.steam-cat-link:hover, .steam-cat-link.active { background: #171728; color: #4ade80; }
-.steam-cat-count { font-size: 0.68rem; color: #555; }
-.steam-main { flex: 1; min-width: 0; }
 .steam-featured {
     background: #0e0e1a; border-radius: 4px; padding: 1rem;
     margin-bottom: 1rem; border: 1px solid #1e1e30;
@@ -155,29 +126,11 @@ $remaining = array_slice($concerts, 5);
     padding-bottom: 0.25rem; border-bottom: 1px solid #1e1e30;
 }
 @media (max-width: 768px) {
-    .steam-layout { flex-direction: column; }
-    .steam-sidebar { width: 100%; min-width: 100%; position: static; }
     .steam-featured-grid { grid-template-columns: 1fr; }
     .steam-featured-grid .steam-feat-card:first-child { grid-row: span 1; }
 }
 </style>
 
-<div class="steam-layout">
-    <!-- Left category sidebar (Steam-style) -->
-    <div class="steam-sidebar">
-        <div class="steam-sidebar-title"><i class="fas fa-tags"></i> Categories</div>
-        <a class="steam-cat-link active" data-filter="all">
-            All Games <span class="steam-cat-count"><?php echo count($concerts); ?></span>
-        </a>
-        <?php foreach ($genres as $genre => $count): ?>
-        <a class="steam-cat-link" data-filter="<?php echo htmlspecialchars($genre); ?>">
-            <?php echo htmlspecialchars($genre); ?> <span class="steam-cat-count"><?php echo $count; ?></span>
-        </a>
-        <?php endforeach; ?>
-    </div>
-
-    <!-- Main content area -->
-    <div class="steam-main">
         <!-- Featured section -->
         <?php if (!empty($featured)): ?>
         <div class="steam-featured">
@@ -235,30 +188,6 @@ $remaining = array_slice($concerts, 5);
             </div>
             <?php endforeach; ?>
         </div>
-    </div>
-</div>
-
-<script>
-(function() {
-    document.querySelectorAll('.steam-cat-link').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            var filter = this.dataset.filter;
-            document.querySelectorAll('.steam-cat-link').forEach(function(l) { l.classList.remove('active'); });
-            this.classList.add('active');
-
-            // Filter featured cards
-            document.querySelectorAll('.steam-feat-card').forEach(function(card) {
-                card.style.display = (filter === 'all' || card.dataset.genre === filter) ? '' : 'none';
-            });
-            // Filter game rows
-            document.querySelectorAll('.steam-game-row').forEach(function(row) {
-                row.style.display = (filter === 'all' || row.dataset.genre === filter) ? '' : 'none';
-            });
-        });
-    });
-})();
-</script>
 
 <?php else: ?>
 <!-- ======== DEFAULT CARD GRID LAYOUT (non-games themes) ======== -->
