@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x:*)",
+      "Bash(php -l config/themes.php)",
+      "Bash(php -l config/config.inc.php)",
+      "Bash(php -l dvwa/includes/dvwaPage.inc.php)",
+      "Bash(php -l dvwa/includes/header.php)",
+      "Bash(php -l dvwa/includes/footer.php)"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+# TicketDisaster — single-image build (web + database in one container)
+# Build:  docker build -t ticket-disaster -f Dockerfile.standalone .
+# Run:    docker run -d -p 8080:80 --name ticket-disaster ticket-disaster
+# Setup:  visit http://localhost:8080/setup.php and click "Create / Reset Database"
+
+FROM php:8.2-apache
+
+# ── System packages ────────────────────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libpng-dev libjpeg-dev libfreetype-dev \
+        mariadb-server \
+        supervisor \
+        iputils-ping \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── PHP extensions ─────────────────────────────────────────────────────────────
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-install mysqli pdo pdo_mysql gd
+
+# ── PHP settings (intentionally insecure — training only) ─────────────────────
+RUN printf 'allow_url_include = On\nallow_url_fopen = On\ndisplay_errors = On\nfile_uploads = On\nupload_max_filesize = 10M\n' \
+    > /usr/local/etc/php/conf.d/ticketdisaster.ini
+
+# ── Apache ─────────────────────────────────────────────────────────────────────
+RUN a2enmod rewrite \
+ && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
+        /etc/apache2/apache2.conf
+
+# ── Supervisor + entrypoint ────────────────────────────────────────────────────
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/entrypoint.sh    /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# ── App code ───────────────────────────────────────────────────────────────────
+WORKDIR /var/www/html
+COPY . .
+RUN mkdir -p hackable/uploads \
+ && chown -R www-data:www-data /var/www/html \
+ && chmod -R 755 hackable/uploads
+
+# ── Runtime env (DB on localhost — no separate container needed) ───────────────
+ENV DB_HOST=127.0.0.1 \
+    DB_USER=root \
+    DB_PASS=vulnerable \
+    DB_NAME=ticketdisaster
+
+EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
