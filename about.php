@@ -7,7 +7,7 @@ $theme = getThemeConfig();
 
 <div class="page-header">
     <h1 class="page-title"><i class="fas fa-info-circle"></i> About <?php echo htmlspecialchars($theme['name']); ?></h1>
-    <p class="page-subtitle"><?php echo htmlspecialchars($theme['tagline']); ?></p>
+    <p class="page-subtitle"><?php echo $theme['tagline']; ?></p>
 </div>
 
 <div class="row">

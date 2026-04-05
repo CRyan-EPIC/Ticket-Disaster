@@ -800,6 +800,12 @@ class ConcertScraper {
     }
 
     public function updateExistingImages($themeKey = 'music') {
+        // Cars theme uses placeholders — no images to fetch
+        if ($themeKey === 'cars') {
+            $this->log("Cars theme uses placeholder graphics — skipping image fetch.");
+            return 0;
+        }
+
         global $_DVWA;
         require_once dirname(__FILE__) . '/../../config/config.inc.php';
         $conn = new mysqli($_DVWA['db_server'], $_DVWA['db_user'], $_DVWA['db_password'], $_DVWA['db_database'], $_DVWA['db_port']);

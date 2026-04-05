@@ -12,7 +12,7 @@ $THEMES = [
        ================================================================ */
     'music' => [
         'name'        => 'TicketDisaster',
-        'tagline'     => 'Vulnerable Concert Ticket Shop',
+        'tagline'     => 'Vulnerable Concert<br>Ticket Shop',
         'motto'       => '"We handle your passwords like we handle mosh pits &mdash; no protection."',
         'login_quip'  => '"Your data is our encore."',
         'icon'        => 'fas fa-ticket-alt',
@@ -100,8 +100,8 @@ $THEMES = [
        ================================================================ */
     'sports' => [
         'name'        => 'Stadia',
-        'tagline'     => 'Vulnerable Sports Ticket Shop',
-        'motto'       => '"Go Denver! Our teams are unstoppable &mdash; our security, not so much."',
+        'tagline'     => 'Vulnerable Sports<br>Ticket Shop',
+        'motto'       => '"Championship Rings. Plaintext Strings."',
         'login_quip'  => '"Mile High pride, mile-low security."',
         'icon'        => 'fas fa-football-ball',
         'accent'      => '#f97316',        // orange
@@ -183,7 +183,7 @@ $THEMES = [
        ================================================================ */
     'games' => [
         'name'        => 'Flux',
-        'tagline'     => 'Vulnerable Game Store',
+        'tagline'     => 'Vulnerable<br>Game Store',
         'motto'       => '"We ship bugs faster than any AAA studio."',
         'login_quip'  => '"Your account security? We left it in Early Access."',
         'icon'        => 'fas fa-gamepad',
@@ -265,9 +265,9 @@ $THEMES = [
        CARS — $1000-or-less death traps for high school students
        ================================================================ */
     'cars' => [
-        'name'        => 'Rust Bucket Motors',
-        'tagline'     => 'Vulnerable Used Car Lot',
-        'motto'       => '"If the check engine light ISN\'T on, something is wrong."',
+        'name'        => 'Rusty Bucket',
+        'tagline'     => 'Vulnerable Used Car<br>Lot',
+        'motto'       => '"Held by hope."',
         'login_quip'  => '"Our security is as reliable as our transmissions."',
         'icon'        => 'fas fa-car-crash',
         'accent'      => '#ef4444',        // red (danger!)
@@ -321,7 +321,7 @@ $THEMES = [
         'vuln_upload_desc'  => 'Upload a photo of your Rust Bucket purchase (for insurance claims)',
 
         'vuln_csrf_title'   => 'Account Security',
-        'vuln_csrf_desc'    => 'Change your Rust Bucket Motors account password',
+        'vuln_csrf_desc'    => 'Change your Rusty Bucket account password',
 
         'vuln_fi_title'     => '"Warranty" & Policies',
         'vuln_fi_desc'      => 'Read our generous policies (spoiler: everything is as-is)',
@@ -331,7 +331,7 @@ $THEMES = [
         'vuln_brute_success'=> 'Welcome to the Break Room',
         'vuln_brute_flavor' => 'You now have access to the REAL vehicle history reports.',
 
-        'about_what'        => 'Rust Bucket Motors is a deliberately vulnerable web application themed as a hilariously sketchy used car lot selling $1,000-or-less vehicles to high school students.',
+        'about_what'        => 'Rusty Bucket is a deliberately vulnerable web application themed as a hilariously sketchy used car lot selling $1,000-or-less vehicles to high school students.',
         'about_modules'     => [
             ['Vehicle Search',   'Search inventory by name',    'SQL Injection'],
             ['Lot Search',       'Search vehicles',             'XSS (Reflected)'],

@@ -142,7 +142,7 @@ if (isset($_POST['reset_db'])) {
                 <div class="card bg-dark border-purple">
                     <div class="card-body text-center p-5">
                         <h1 class="display-4 text-purple mb-2"><i class="<?php echo $theme['icon']; ?>"></i> <?php echo htmlspecialchars($theme['name']); ?></h1>
-                        <p class="text-muted mb-4"><?php echo htmlspecialchars($theme['tagline']); ?></p>
+                        <p class="text-muted mb-4"><?php echo $theme['tagline']; ?></p>
                         <hr class="border-purple">
 
                         <?php echo $message; ?>

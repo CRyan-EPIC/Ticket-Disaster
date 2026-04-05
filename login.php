@@ -94,7 +94,7 @@ global $THEMES;
         <div class="login-card">
             <div class="login-brand">
                 <h1><i class="<?php echo $theme['icon']; ?>"></i> <?php echo htmlspecialchars($theme['name']); ?></h1>
-                <p><?php echo htmlspecialchars($theme['tagline']); ?></p>
+                <p><?php echo $theme['tagline']; ?></p>
                 <p style="font-size:0.75rem;color:<?php echo $theme['secondary']; ?>;font-style:italic;opacity:0.7;margin-top:0.3rem;"><?php echo $theme['login_quip']; ?></p>
             </div>
 

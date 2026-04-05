@@ -68,7 +68,7 @@ $bp = $base_path ?? '';
                     <span class="brand-icon"><i class="<?php echo $theme['icon']; ?>"></i></span>
                     <span class="nav-text"><?php echo htmlspecialchars($theme['name']); ?></span>
                 </a>
-                <div class="sidebar-subtitle nav-text"><?php echo htmlspecialchars($theme['tagline']); ?></div>
+                <div class="sidebar-subtitle nav-text"><?php echo $theme['tagline']; ?></div>
                 <div class="sidebar-motto nav-text"><?php echo $theme['motto']; ?></div>
             </div>
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# TicketDisaster / Stadia / Flux / Rust Bucket Motors
+# TicketDisaster / Stadia / Flux / Rusty Bucket
 # Auto-deploy script for Fedora 42+ and Ubuntu 24.04+
 #
 # Installs Apache, PHP, MariaDB, configures everything, seeds the database.
@@ -387,9 +387,8 @@ print_summary() {
     echo ""
     echo -e "  ${YELLOW}Next steps:${NC}"
     echo -e "    1. Visit http://${ip}/ in your browser"
-    echo -e "    2. Choose a theme (Music, Sports, Games, or Cars)"
-    echo -e "    3. Click 'Create / Reset Database' on the setup page"
-    echo -e "    4. Login with: ${GREEN}admin / password${NC}"
+    echo -e "    2. Choose a theme and login with: ${GREEN}admin / password${NC}"
+    echo -e "    (Database and data are set up automatically)"
     echo ""
     echo -e "  ${YELLOW}Logs:${NC}"
     echo -e "    Apache error:  ${LOG_DIR}/error.log"
@@ -431,7 +430,17 @@ main() {
         start_services
     fi
 
+    # Run initial scrape to populate data
+    initial_scrape
+
     print_summary
+}
+
+# ── Initial data scrape ──────────────────────────────────────────────────────
+initial_scrape() {
+    log "Running initial data scrape..."
+    cd "${APP_DIR}" && php cron_scrape.php --replace >> "${LOG_DIR}/scraper.log" 2>&1 || true
+    log "Initial scrape complete. Check ${LOG_DIR}/scraper.log for details."
 }
 
 main "$@"

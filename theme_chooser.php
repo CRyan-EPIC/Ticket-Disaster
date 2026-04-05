@@ -197,7 +197,7 @@ if (getCurrentTheme() !== null && !isset($_GET['switch'])) {
             <form method="POST" class="theme-card card-cars">
                 <input type="hidden" name="theme" value="cars">
                 <span class="theme-icon"><i class="fas fa-car-crash"></i></span>
-                <h3>Rust Bucket Motors</h3>
+                <h3>Rusty Bucket</h3>
                 <div class="theme-tagline">$1,000 Used Car Lot</div>
                 <div class="theme-desc">
                     Every vehicle $1,000 or less. Check engine light is a feature. Duct tape is structural. "Runs and drives" is aspirational.
