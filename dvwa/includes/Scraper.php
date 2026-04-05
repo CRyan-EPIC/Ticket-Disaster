@@ -567,10 +567,9 @@ class ConcertScraper {
     /*  DATABASE                                                           */
     /* ------------------------------------------------------------------ */
     public function saveToDatabase($events, $replaceAll = false) {
-        global $_DVWA;
-        require_once dirname(__FILE__) . '/../../config/config.inc.php';
-        $conn = new mysqli($_DVWA['db_server'], $_DVWA['db_user'], $_DVWA['db_password'], $_DVWA['db_database'], $_DVWA['db_port']);
-        if ($conn->connect_error) { $this->log("DB err: " . $conn->connect_error); return 0; }
+        require_once dirname(__FILE__) . '/dvwaPage.inc.php';
+        $conn = dvwaDbConnect();
+        if (!$conn) { $this->log("DB err: could not connect"); return 0; }
 
         // Ensure spotify_url column exists
         try { $conn->query("ALTER TABLE concerts ADD COLUMN spotify_url VARCHAR(500) DEFAULT ''"); } catch (Exception $e) {};
@@ -806,13 +805,9 @@ class ConcertScraper {
             return 0;
         }
 
-        global $_DVWA;
-        require_once dirname(__FILE__) . '/../../config/config.inc.php';
-        $conn = new mysqli($_DVWA['db_server'], $_DVWA['db_user'], $_DVWA['db_password'], $_DVWA['db_database'], $_DVWA['db_port']);
-        if ($conn->connect_error) return 0;
-
-        // Ensure spotify_url column
-        try { $conn->query("ALTER TABLE concerts ADD COLUMN spotify_url VARCHAR(500) DEFAULT ''"); } catch (Exception $e) {};
+        require_once dirname(__FILE__) . '/dvwaPage.inc.php';
+        $conn = dvwaDbConnect();
+        if (!$conn) return 0;
 
         $result = $conn->query("SELECT concert_id, band_name, poster_url, spotify_url FROM concerts");
         $n = 0;
